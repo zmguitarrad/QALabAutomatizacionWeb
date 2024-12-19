@@ -63,32 +63,45 @@ public class LoginTiendaOnlineStep {
         boton.click();
     }
 
-//    public void confirmarValor() {
-//        WebElement boton = driver.findElement(LoginTiendapage.validar);
-//        boton.click();
-//
-//    }
-
-
     public void finalizarCompra() {
         WebElement boton = driver.findElement(LoginTiendapage.enviarButton);
         boton.click();
 
     }
 
-//Scenario Usaurio y cntraseña invalido
+    public void finalizarCompraTotal() {
+        WebElement boton = driver.findElement(LoginTiendapage.finalizarcompraButton);
+        boton.click();
+    }
+
+    public void validarTitulo() {
+        WebElement botontitulo = driver.findElement(LoginTiendapage.validarTituloTexto);
+        botontitulo.click();
+
+    }
+
+    public void validarPrecioTotal() {
+        WebElement boton = driver.findElement(LoginTiendapage.ValidarPrecioTotalButton);
+        boton.click();
+    }
+
     public void validarError(String mensaje) {
-        Assert.assertTrue(driver.getTitle().contains("Error de autenticación."));
-
-
-
+        String tituloActual = driver.getTitle();
+        Assert.assertEquals(
+                tituloActual,
+                mensaje,
+                "Error: Error de autentificación."
+        );
     }
 
 
-    //Scenario usurio y clave correctos y categoria incorrecta
-    public void escogerCategoriaAuto(String categoria) {
-        Assert.assertTrue(driver.getTitle().contains("Auto"));
 
+    public void validarcategoria(String mensajeEsperado) {
+        String tituloActual = driver.getTitle();
+        Assert.assertEquals(
+                tituloActual,
+                mensajeEsperado,
+                "Error: El título no coincide con el mensaje esperado."
+        );
     }
-
 }

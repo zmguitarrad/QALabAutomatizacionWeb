@@ -38,9 +38,9 @@ public class TiendaOnlineStepsDef {
         tiendastep.clickIniciosesion();
         tiendastep.ingresarUsuario(usuario);
         tiendastep.typePassword(clave);
+        screenShot();
         tiendastep.buttonIniciar();
 
-        screenShot();
     }
 
 
@@ -50,79 +50,57 @@ public class TiendaOnlineStepsDef {
         tiendastep = new LoginTiendaOnlineStep(driver);
         tiendastep.escogerCategoria(categoria);
         tiendastep.escogerSubcategoria(subcategoria);
-        tiendastep.elegirElemento();
         screenShot();
-    }
+        tiendastep.elegirElemento();
 
+    }
+//se pudo solucionar utilizando Thread.sleep (aunque no es permitido)
     @And("agrego {int} unidades del primer producto al carrito")
-    public void agrego_unidades_del_primer_producto_al_carrito(int elemento) {
-        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+    public void agrego_unidades_del_primer_producto_al_carrito(int elemento) throws InterruptedException{
         tiendastep = new LoginTiendaOnlineStep(driver);
         tiendastep.anadirelemento(elemento);
         screenShot();
+        tiendastep.comprarElem();
+        Thread.sleep(1000);
+
 
     }
 
     @Then("valido en el popup la confirmacion del producto agregado")
     public void valido_en_el_popup_la_confirmacion_del_producto_agregado() {
-        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        tiendastep.comprarElem();
-
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         screenShot();
+        tiendastep.finalizarCompra();
+
     }
 
-//    @When("finalizo la compra")
-//    public void finalizo_la_compra() {
-//        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-//        tiendastep.finalizarCompra();
-//        screenShot();
-//
-//    }
+    @When("finalizo la compra")
+    public void finalizo_la_compra() {
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        screenShot();
+        tiendastep.finalizarCompraTotal();
+
+
+    }
 
     @Then("valido el titulo de la pagina del carrito")
     public void valido_el_titulo_de_la_pagina_del_carrito() {
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        tiendastep.validarTitulo();
+        screenShot();
+
 
     }
 
     @And("vuelvo a validar el calculo de precios en el carrito")
     public void vuelvo_a_validar_el_calculo_de_precios_en_el_carrito() {
-
-    }
-// Scenario: Login con un usuario invalido
-    @Given("estoy en la página de la tienda")
-    public void estoyEnLaPáginaDeLaTienda() {
-        driver = getDriver();
-        driver.get("https://qalab.bensg.com/store/es/");
-        screenShot();
-    }
-
-    @When("ingreso mi usuario {string} y clave {string}")
-    public void ingresoMiUsuarioYClave(String usuario, String clave) {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        tiendastep = new LoginTiendaOnlineStep(driver);
-        tiendastep.clickIniciosesion();
-        tiendastep.ingresarUsuario(usuario);
-        tiendastep.typePassword(clave);
-        tiendastep.buttonIniciar();
-
+        tiendastep.validarPrecioTotal();
         screenShot();
 
     }
 
-    @Then("muestra un mensaje de error {string}")
-    public void muestraUnMensajeDeError(String mensaje) {
-        tiendastep.validarError(mensaje);
-
-    }
 
 
-    //Scenario usurio y clave correctos y categoria incorrecta
-    @And("busco la categoria {string}")
-    public void buscoLaCategoria(String categoria) {
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        tiendastep = new LoginTiendaOnlineStep(driver);
-        tiendastep.escogerCategoriaAuto(categoria);
-        screenShot();
-    }
 
 }
